@@ -1,35 +1,17 @@
 package com.example;
 
 import org.lwjgl.*;
+
+import com.example.Utils.ShaderConfig;
+
 import java.nio.*;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
-import static org.lwjgl.opengl.GL11.GL_FRONT;
-import static org.lwjgl.opengl.GL11.GL_LINES;
-import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
-import static org.lwjgl.opengl.GL11.glDrawArrays;
-import static org.lwjgl.opengl.GL11.glPolygonMode;
 import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL15.glBindBuffer;
 import static org.lwjgl.opengl.GL15.glBufferData;
 import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_LINK_STATUS;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import static org.lwjgl.opengl.GL20.glAttachShader;
-import static org.lwjgl.opengl.GL20.glCompileShader;
-import static org.lwjgl.opengl.GL20.glCreateProgram;
-import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glDeleteShader;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glGetProgramInfoLog;
-import static org.lwjgl.opengl.GL20.glGetProgrami;
-import static org.lwjgl.opengl.GL20.glGetShaderInfoLog;
-import static org.lwjgl.opengl.GL20.glGetShaderi;
-import static org.lwjgl.opengl.GL20.glLinkProgram;
-import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
@@ -78,51 +60,11 @@ public class CriarTriangulo {
         glEnableVertexAttribArray(0);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-        // shader de vertice etapa:
-        String fonteShaderDeVertice = " #version 330 core \n" +
-                "layout(location = 0) in vec3 aPos; \n" +
-                "void main() { \n" +
-                "gl_Position = vec4(aPos, 1.0);\n" +
-                "}";
-
-        int shaderDeVertice = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(shaderDeVertice, fonteShaderDeVertice);
-        glCompileShader(shaderDeVertice);
-
-        if (glGetShaderi(shaderDeVertice, GL_COMPILE_STATUS) == GL_FALSE) {
-            throw new RuntimeException("Vertex Shader Erro:\n" + glGetShaderInfoLog(shaderDeVertice));
-        }
-
-        // etapa do shader de fragmento:
-        String fonteShaderDerFragmento = "#version 330 core\n" +
-                "out vec4 FragColor; \n" +
-                "void main() {\n" +
-                "    FragColor = vec4(1.0, 1.0, 1.0, 1.0);" +
-                "};";
-        int shaderDeFragmento = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(shaderDeFragmento, fonteShaderDerFragmento);
-        glCompileShader(shaderDeFragmento);
-        if (glGetShaderi(shaderDeVertice, GL_COMPILE_STATUS) == GL_FALSE) {
-            throw new RuntimeException("shader de fragmento: erro na compilação");
-        }
-
-        // etapa de vincular os programas de shader em um unico:
-
-        int shaderProgram = glCreateProgram();
-        glAttachShader(shaderProgram, shaderDeVertice);
-        glAttachShader(shaderProgram, shaderDeFragmento);
-        glLinkProgram(shaderProgram);
-
-        // verifica se a vinculacao foi bem sucedida
-        if (glGetProgrami(shaderProgram, GL_LINK_STATUS) == GL_FALSE) {
-            throw new RuntimeException("Erro ao linkar shader program:\n" + glGetProgramInfoLog(shaderProgram));
-        }
-
-        // deleta os shaders que não serão mais usados
-        glDeleteShader(shaderDeVertice);
-        glDeleteShader(shaderDeFragmento);
-
-        glUseProgram(shaderProgram);
+        
+        ShaderConfig shaderConfig = ShaderConfig
+        .createShader()
+        .setVertexShader("/home/devtiago/Área de trabalho/Workspace/programas c++/LWJGL-OpenGL-/demo/src/main/java/com/example/shaders/vertexShaders/vertexShaderTest.glsl")
+        .setfragmentShader("/home/devtiago/Área de trabalho/Workspace/programas c++/LWJGL-OpenGL-/demo/src/main/java/com/example/shaders/FragmentShader/fragSTest.glsl").applyShaderConfig().use();
 
     }
 

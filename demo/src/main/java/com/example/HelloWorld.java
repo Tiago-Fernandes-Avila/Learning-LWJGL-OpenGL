@@ -11,6 +11,7 @@ import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.glDeleteBuffers;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 import static com.example.CriarTriangulo.*;
@@ -110,7 +111,8 @@ public class HelloWorld {
 			});
 
 			triangulo.criar();
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			
+			
 			glDrawElements(GL_TRIANGLES, triangulo.getIndicesQuantity(), GL_UNSIGNED_INT, 0);
 			glfwSwapBuffers(window); // swap the color buffers
 

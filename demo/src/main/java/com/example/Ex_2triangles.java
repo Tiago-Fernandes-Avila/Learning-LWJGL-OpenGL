@@ -59,6 +59,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
 import com.*;
+import com.example.Utils.ReadShader;
 
 public class Ex_2triangles {
 

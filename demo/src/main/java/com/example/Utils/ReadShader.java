@@ -1,4 +1,4 @@
-package com;
+package com.example.Utils;
 
 import java.io.BufferedReader;
 import java.io.File;
